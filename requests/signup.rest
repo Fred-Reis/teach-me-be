@@ -1,0 +1,57 @@
+@baseUrl = http://localhost:3333
+@authToken = {{authentication.response.body.access_token}}
+@dateNow = {{$datetime iso8601}}
+
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "name": "fred",
+  "email": "fred6@fred.com",
+  "password": "123456",
+  "role": "TEACHER"
+}
+
+###
+
+# @name get_users
+GET {{baseUrl}}/accounts
+Content-Type: application/json
+
+###
+
+# @name authentication
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "fred4@fred.com",
+  "password": "123456"
+}
+
+###
+
+# @name create_appointment
+POST {{baseUrl}}/appointments
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "spotId": "3bb31a6b-a7ef-408b-9378-b811f8a5f47f", 
+  "subject":"programing", 
+  "duration": "120", 
+  "rating": "" 
+}
+
+###
+
+# @name create_spot
+POST {{baseUrl}}/spots
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "date": "2024-11-26T01:03:39.450Z"
+}

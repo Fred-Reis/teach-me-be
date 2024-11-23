@@ -1,0 +1,170 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  STUDENT
+  TEACHER
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  tags     String[]
+  rating   String?
+  role     UserRole
+
+  studentAppointments Appointment[] @relation("StudentAppointments")
+  teacherAppointments Appointment[] @relation("TeacherAppointments")
+  studentSchedules    Spot[]        @relation("StudentAppointments")
+  teacherSchedules    Spot[]        @relation("TeacherAppointments")
+
+  @@map("user")
+}
+
+model Appointment {
+  id        String    @id @default(uuid())
+  date      DateTime
+  url       String    @unique
+  duration  String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  concluded Boolean   @default(false)
+  rating    String?
+  subject   String?
+
+  student   User   @relation("StudentAppointments", fields: [studentId], references: [id])
+  teacher   User   @relation("TeacherAppointments", fields: [teacherId], references: [id])
+  studentId String @map("student_id")
+  teacherId String @map("teacher_id")
+
+  schedule Spot?
+
+  @@map("appointment")
+}
+
+model Spot {
+  id          String   @id @default(uuid())
+  dateTime    DateTime
+  isAvailable Boolean  @default(true) @map("is_available")
+
+  student     User?        @relation("StudentAppointments", fields: [studentId], references: [id])
+  teacher     User         @relation("TeacherAppointments", fields: [teacherId], references: [id])
+  appointment Appointment? @relation(fields: [appointmentId], references: [id])
+
+  studentId     String? @map("student_id")
+  teacherId     String  @map("teacher_id")
+  appointmentId String? @unique @map("appointment_id")
+
+  @@map("spot")
+}
+
+// model User {
+//   id           Int           @id @default(autoincrement())
+//   name         String
+//   email        String        @unique
+//   role         UserRole // Enum para distinguir Student e Teacher
+//   appointments Appointment[] // Relacionamento com Appointments
+//   schedules    Schedule[] // Relacionamento com Schedule
+//   Appointment  Appointment[]
+//   Appointment  Appointment[]
+//   Appointment  Appointment[]
+// }
+
+// model Appointment {
+//   id        Int        @id @default(autoincrement())
+//   studentId Int
+//   teacherId Int
+//   dateTime  DateTime
+//   student   User       @relation("StudentAppointments", fields: [studentId], references: [id])
+//   teacher   User       @relation("TeacherAppointments", fields: [teacherId], references: [id])
+//   User      User?      @relation(fields: [userId], references: [id])
+//   userId    Int?
+//   Schedule  Schedule[]
+// }
+
+// model Schedule {
+//   id            Int          @id @default(autoincrement())
+//   userId        Int // Usuário (Student ou Teacher)
+//   dateTime      DateTime // Horário disponível ou marcado
+//   isBooked      Boolean      @default(false) // Indica se está reservado
+//   appointmentId Int? // Relaciona com Appointment, caso esteja reservado
+//   user          User         @relation(fields: [userId], references: [id])
+//   appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+// }
+
+// model Student {
+//   id       String   @id @default(uuid())
+//   name     String
+//   email    String   @unique
+//   password String
+//   tags     String[]
+
+//   appointments Appointment[]
+//   Schedule     Schedule[]
+
+//   @@map("student")
+// }
+
+// model Teacher {
+//   id       String   @id @default(uuid())
+//   name     String
+//   email    String   @unique
+//   password String
+//   tags     String[]
+
+//   appointments Appointment[]
+//   Schedule     Schedule[]
+
+//   @@map("teacher")
+// }
+
+// model Appointment {
+//   id        String    @id @default(uuid())
+//   date      DateTime
+//   url       String
+//   duration  String
+//   createdAt DateTime  @default(now()) @map("created_at")
+//   updatedAt DateTime? @updatedAt @map("updated_at")
+//   concluded Boolean   @default(false)
+
+//   student Student @relation(fields: [studentId], references: [id])
+//   teacher Teacher @relation(fields: [teacherId], references: [id])
+
+//   studentId String    @map("student_id")
+//   teacherId String    @map("teacher_id")
+//   schedule  Schedule?
+
+//   @@map("appointment")
+// }
+
+// model Schedule {
+//   id          String   @id @default(uuid())
+//   dateTime    DateTime
+//   isBooked    Boolean  @default(false) @map("is_booked")
+//   isAvailable Boolean  @default(true) @map("is_available")
+
+//   student     Student?     @relation(fields: [studentId], references: [id])
+//   teacher     Teacher?     @relation(fields: [teacherId], references: [id])
+//   appointment Appointment? @relation(fields: [appointmentId], references: [id])
+
+//   studentId     String? @map("student_id")
+//   teacherId     String? @map("teacher_id")
+//   appointmentId String  @unique @map("appointment_id")
+
+//   @@map("schedule")
+// }

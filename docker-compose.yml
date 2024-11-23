@@ -1,0 +1,13 @@
+services:
+  postgres:
+    container_name: teach-me-postgres
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=teach-me
+      - POSTGRES_USER=teach-me
+      - POSTGRES_PASSWORD=teach-me
+      - PGDATA=/data/postgres
+    volumes:
+      - ./data/pg:/data/postgres
