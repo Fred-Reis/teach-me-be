@@ -12,7 +12,6 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { z } from 'zod'
 
 const createAppointmentBodySchema = z.object({
@@ -27,10 +26,7 @@ type CreateAppointmentBodySchema = z.infer<typeof createAppointmentBodySchema>
 @Controller('/appointments')
 @UseGuards(JwtAuthGuard)
 export class CreateAppointmentController {
-  constructor(
-    private prisma: PrismaService,
-    private jwt: JwtService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   @Post()
   @UsePipes(new ZodValidationPipe(createAppointmentBodySchema))

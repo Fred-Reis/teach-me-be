@@ -52,7 +52,7 @@ model Appointment {
   studentId String @map("student_id")
   teacherId String @map("teacher_id")
 
-  schedule Spot?
+  spot Spot?
 
   @@map("appointment")
 }

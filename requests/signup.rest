@@ -27,7 +27,7 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "fred4@fred.com",
+  "email": "fred6@fred.com",
   "password": "123456"
 }
 
@@ -41,8 +41,7 @@ Authorization: Bearer {{authToken}}
 {
   "spotId": "3bb31a6b-a7ef-408b-9378-b811f8a5f47f", 
   "subject":"programing", 
-  "duration": "120", 
-  "rating": "" 
+  "duration": "120"
 }
 
 ###
@@ -55,3 +54,17 @@ Authorization: Bearer {{authToken}}
 {
   "date": "2024-11-26T01:03:39.450Z"
 }
+
+###
+
+# @name cancel_appointment
+PATCH  {{baseUrl}}/cancel-appointment/08e59bef-c156-479e-bbd1-eba5a043a6dd
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name delete_spot
+DELETE   {{baseUrl}}/spots/72bbf6a7-3151-4550-a0b9-799da1e8c97c
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
