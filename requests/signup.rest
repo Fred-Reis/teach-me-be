@@ -28,7 +28,7 @@ Content-Type: application/json
 
 {
   "email": "fred6@fred.com",
-  "password": "123456"
+  "password": "123451"
 }
 
 ###
@@ -52,7 +52,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "date": "2024-11-26T01:03:39.450Z"
+  "date": "2024-12-26T01:03:39.450Z"
 }
 
 ###
@@ -67,4 +67,16 @@ Authorization: Bearer {{authToken}}
 # @name delete_spot
 DELETE   {{baseUrl}}/spots/72bbf6a7-3151-4550-a0b9-799da1e8c97c
 Content-Type: application/json
+Authorization: Bearer {{authToken}}ß
+
+###
+
+# @name change_password
+PATCH    {{baseUrl}}/change-password
+Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+{
+  "oldPassword": "123451",
+  "newPassword": "123456"
+}

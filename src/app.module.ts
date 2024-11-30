@@ -9,6 +9,7 @@ import { CreateAppointmentController } from './controllers/create-appointment.co
 import { CreateSpotsController } from './controllers/create-spot.controller'
 import { CancelAppointmentController } from './controllers/cancel-appointment.controller'
 import { DeleteSpotController } from './controllers/delete-spot.controller'
+import { ChangePasswordController } from './controllers/change-password.controller'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DeleteSpotController } from './controllers/delete-spot.controller'
     CreateSpotsController,
     CancelAppointmentController,
     DeleteSpotController,
+    ChangePasswordController,
   ],
   providers: [PrismaService],
 })

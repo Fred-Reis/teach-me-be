@@ -4,9 +4,9 @@ import { UserTokenSchema } from '@/auth/jwt.strategy'
 import { PrismaService } from '@/prisma/prisma.service'
 import {
   Controller,
+  Delete,
   NotFoundException,
   Param,
-  Patch,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
@@ -16,7 +16,7 @@ import {
 export class CancelAppointmentController {
   constructor(private prisma: PrismaService) {}
 
-  @Patch('/:id')
+  @Delete('/:id')
   async handle(@CurrentUser() user: UserTokenSchema, @Param('id') id: string) {
     const appointment = await this.prisma.appointment.findUnique({
       where: {
